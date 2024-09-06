@@ -1,6 +1,6 @@
 package br.com.qualitatec.api.purchasing;
 
-import br.com.qualitatec.api.purchasing.integration.IntegrationService;
+import br.com.qualitatec.api.purchasing.integration.IntegrationClientService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +14,7 @@ public class PurchasingApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(IntegrationService service) {
+	CommandLineRunner runner(IntegrationClientService service) {
 		return args -> {
 			service.productIntegration();
 			service.compraIntegration();

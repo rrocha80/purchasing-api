@@ -1,7 +1,7 @@
 package br.com.qualitatec.api.purchasing.integration;
 
-public interface IntegrationService {
-    void productIntegration();
+import br.com.qualitatec.api.purchasing.dto.Response;
 
-    void compraIntegration();
+public interface IntegrationService {
+    void alimentarDadosCompras(Response response);
 }

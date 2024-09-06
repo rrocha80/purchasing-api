@@ -8,6 +8,6 @@ import java.util.List;
 public class ClienteCompraResponse {
     private String nome;
     private String cpf;
-    private List<CompraResponse> compras;
+    private List<CompraDto> compras;
 
 }

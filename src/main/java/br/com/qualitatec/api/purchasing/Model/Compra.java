@@ -17,15 +17,17 @@ import java.io.Serializable;
 public class Compra implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long compraId;
 
-    @OneToOne
-    @JoinColumn(name="id", nullable=false)
+    @ManyToOne
+    @JoinColumn(name="CLIENTEID", nullable=false)
     private Cliente cliente;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="codigo", nullable=false)
     private Produto produto;
 
     private int quantidade;
+
+    private Double Total;
 }

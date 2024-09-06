@@ -1,83 +1,50 @@
 package br.com.qualitatec.api.purchasing.integration;
 
-import br.com.qualitatec.api.purchasing.dto.CompraDto;
-import br.com.qualitatec.api.purchasing.dto.ProdutoDto;
+import br.com.qualitatec.api.purchasing.Model.Cliente;
+import br.com.qualitatec.api.purchasing.Model.Compra;
+import br.com.qualitatec.api.purchasing.Model.Produto;
 import br.com.qualitatec.api.purchasing.dto.Response;
+import br.com.qualitatec.api.purchasing.repository.ClienteRepository;
 import br.com.qualitatec.api.purchasing.repository.CompraRepository;
 import br.com.qualitatec.api.purchasing.repository.ProdutoRepository;
-import br.com.qualitatec.api.purchasing.service.CompraService;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.util.Optional;
 
 @Service
 public class IntegrationServiceImpl implements IntegrationService {
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    ClienteRepository clienteRepository;
 
     @Autowired
-    CompraService compraService;
+    CompraRepository compraRepository;
+
+    @Autowired
+    ProdutoRepository produtoRepository;
 
     @Override
-    public void productIntegration() {
-        try {
-            String url = "https://rgr3viiqdl8sikgv.public.blob.vercel-storage.com/produtos-mnboX5IPl6VgG390FECTKqHsD9SkLS.json";
+    public void alimentarDadosCompras(Response response) {
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .GET()
+        response.getCompras().forEach(e -> {
+            Cliente cliente = Cliente.builder()
+                    .nome(e.getNome())
+                    .cpf(e.getCpf())
                     .build();
+            clienteRepository.save(cliente);
 
-            HttpClient httpClient = HttpClient.newHttpClient();
-
-            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            String res = response.body();
-            res = "{\"produtos\":" + res + "}";
-
-            ProdutoDto produtoDto = gson.fromJson(res, ProdutoDto.class);
-
-            produtoDto.getProdutos().forEach(e -> produtoRepository.save(e));
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
+            e.getCompras().forEach(c -> {
+                Optional<Produto> produto = produtoRepository.findById(c.getCodigo());
+                Compra compra = Compra.builder()
+                        .cliente(cliente)
+                        .produto(produto.get())
+                        .quantidade(c.getQuantidade())
+                        .Total(produto.get().getPreco() * c.getQuantidade())
+                        .build();
+                compraRepository.save(compra);
+            });
+        });
     }
 
-    @Override
-    public void compraIntegration() {
-        try {
-            String url = "https://rgr3viiqdl8sikgv.public.blob.vercel-storage.com/clientes-Vz1U6aR3GTsjb3W8BRJhcNKmA81pVh.json";
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .GET()
-                    .build();
-
-            HttpClient httpClient = HttpClient.newHttpClient();
-
-            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            Gson gson = new Gson();
-
-            String res = response.body();
-            res = "{\"compras\":" + res + "}";
-
-            Response resp = gson.fromJson(res, Response.class);
-
-            compraService.alimentarDadosCompras(resp);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
 }

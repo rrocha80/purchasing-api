@@ -1,6 +1,7 @@
 package br.com.qualitatec.api.purchasing.Model;
 
 import com.google.gson.annotations.SerializedName;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -28,5 +29,6 @@ public class Produto implements Serializable {
     private int safra;
 
     @SerializedName("ano_compra")
+    @Column(name = "ANO_COMPRA")
     private int anoCompra;
 }

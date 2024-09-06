@@ -1,9 +1,7 @@
 package br.com.qualitatec.api.purchasing.controller;
 
 import br.com.qualitatec.api.purchasing.Model.Cliente;
-import br.com.qualitatec.api.purchasing.Model.Produto;
 import br.com.qualitatec.api.purchasing.repository.ClienteRepository;
-import br.com.qualitatec.api.purchasing.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/cliente")
+@RequestMapping("/api/v1/cliente")
 public class ClienteController {
 
     @Autowired

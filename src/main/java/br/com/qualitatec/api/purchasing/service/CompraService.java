@@ -1,7 +1,17 @@
 package br.com.qualitatec.api.purchasing.service;
 
-import br.com.qualitatec.api.purchasing.dto.Response;
+import br.com.qualitatec.api.purchasing.dto.ClienteFielDto;
+import br.com.qualitatec.api.purchasing.dto.ClienteRecomendacaoVinhoDto;
+import br.com.qualitatec.api.purchasing.dto.CompraResponse;
+
+import java.util.List;
 
 public interface CompraService {
-    void alimentarDadosCompras(Response response);
+    CompraResponse findAllCompras();
+
+    CompraResponse findByMaiorCompraAno(int ano);
+
+    List<ClienteFielDto> findByClienteFiel();
+
+    List<ClienteRecomendacaoVinhoDto> findByClienteVinhoRecomenda();
 }

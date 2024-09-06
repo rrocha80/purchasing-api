@@ -7,6 +7,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProdutoDto {
+public class ProdutoResponse {
     private List<Produto> produtos;
 }
